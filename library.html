@@ -259,13 +259,23 @@ async function loadComments(submissionId) {
 function renderDetailPanel(item) {
   const fileHtml = item.file_url ? `<a href="${escapeHtml(item.file_url)}" target="_blank">Download attachment</a>` : '<span class="text-muted">No attachment</span>';
   const body = document.getElementById('detailPanelBody');
+  const canGeneratePost = canGeneratePostForItem(item);
+  const generateButtonHtml = canGeneratePost
+    ? `<button class="btn btn-primary btn-sm" onclick="abrirModalGerarPost()" title="Generate Post"><i class="bi bi-megaphone-fill"></i></button>`
+    : '';
+  const generateActionHtml = canGeneratePost
+    ? `<button class="btn btn-outline-primary btn-sm" onclick="abrirModalGerarPost()"><i class="bi bi-megaphone-fill"></i> Generate Post</button>`
+    : `<button class="btn btn-outline-secondary btn-sm" type="button" disabled title="Only the creator of an approved idea can generate the post automatically."><i class="bi bi-megaphone-fill"></i> Generate Post</button>`;
+  const helperHtml = canGeneratePost
+    ? `<div class="small text-success mt-2">Automatic post generation available for the creator of this approved idea.</div>`
+    : `<div class="small text-muted mt-2">Automatic post generation is available only for the creator of an approved idea.</div>`;
   body.innerHTML = `
     <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
       <div>
         <h4 class="mb-1">${escapeHtml(item.title)}</h4>
         <span class="panel-badge ${badgeClass(item.status)}">${escapeHtml(item.status || 'Pending')}</span>
       </div>
-      <button class="btn btn-primary btn-sm" onclick="abrirModalGerarPost()" title="Generate Post"><i class="bi bi-megaphone-fill"></i></button>
+      ${generateButtonHtml}
     </div>
 
     <div class="panel-meta">
@@ -276,9 +286,10 @@ function renderDetailPanel(item) {
     </div>
 
     <div class="panel-actions">
-      <button class="btn btn-outline-primary btn-sm" onclick="abrirModalGerarPost()"><i class="bi bi-megaphone-fill"></i> Generate Post</button>
+      ${generateActionHtml}
       <a class="btn btn-outline-secondary btn-sm" href="detail.html?id=${item.id}" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Open full page</a>
     </div>
+    ${helperHtml}
 
     <div class="panel-section"><h6>Description</h6><div>${escapeHtml(item.description || 'No description')}</div></div>
     <div class="panel-section"><h6>Implementation Guide</h6><div>${escapeHtml(item.steps || 'No steps available')}</div></div>
@@ -600,15 +611,15 @@ window.copiarTexto = function() {
 window.abrirModalGerarPost = async function() {
   const id = window.selectedPracticeId;
   if (!id) { alert('Select a Best Practice first.'); return; }
+  await initUser();
   const bestPractice = await fetchBestPractice(id);
-  const currentUser = await getLoggedUser();
-  if (!bestPractice || !currentUser) { alert('Erro ao carregar dados.'); return; }
-  if (bestPractice.status === 'Approved' && bestPractice.responsible === currentUser.email) {
+  if (!bestPractice || !window.userGlobal) { alert('Erro ao carregar dados.'); return; }
+  if (canGeneratePostForItem(bestPractice)) {
     gerarTexto(id);
     const modal = new bootstrap.Modal(document.getElementById('postModal'));
     modal.show();
   } else {
-    alert('Você só pode gerar posts de Best Practices aprovadas que você criou.');
+    alert('Only the creator of an approved Best Practice can generate the post automatically.');
   }
 };
 
