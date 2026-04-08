@@ -8,6 +8,7 @@
 <title>Audit & Verification</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
 <style>
 .layout { display: flex; height: 100vh; }
 .sidebar {
@@ -33,18 +34,7 @@
 .sidebar a:hover { background-color: #575757; }
 .sidebar a span:first-child { width: 30px; text-align: center; }
 .sidebar .link-text { opacity: 1; transition: opacity 0.2s ease; }
-.sidebar.collapsed .link-text {
-  opacity: 0;
-  pointer-events: none;
-  width: 0;
-  overflow: hidden;
-}
-main {
-  flex: 1;
-  padding: 20px;
-  transition: margin-left 0.3s ease;
-  overflow-y: auto;
-}
+.sidebar.collapsed .link-text { opacity: 0; pointer-events: none; width: 0; overflow: hidden; }
 .openbtn {
   position: fixed;
   top: 10px;
@@ -57,50 +47,138 @@ main {
   padding: 10px 15px;
   border: none;
 }
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #f4f6f8;
+body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f8; }
+header { background: #9AB6DE; color: white; padding: 1rem; text-align: center; }
+main { flex: 1; padding: 2em; overflow-y: auto; }
+.audit-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(340px, 0.9fr);
+  gap: 24px;
+  align-items: start;
 }
-header {
-  background: #9AB6DE;
-  color: white;
-  padding: 1rem;
-  text-align: center;
+.audit-list-card,
+.audit-panel-card {
+  background: #fff;
+  border: 1px solid #e4e8ee;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(16, 16, 16, 0.06);
 }
-main { padding: 2em; }
-.audit-toolbar .btn { min-width: 180px; }
+.audit-list-card { padding: 20px; }
+.audit-panel-card {
+  padding: 20px;
+  position: sticky;
+  top: 24px;
+}
+.audit-toolbar .btn { min-width: 170px; }
+.table-wrap {
+  max-height: calc(100vh - 320px);
+  overflow: auto;
+  border: 1px solid #edf1f5;
+  border-radius: 12px;
+}
+#results-table { margin-bottom: 0; }
+#results-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fff;
+}
 #results-table tbody tr { cursor: pointer; }
 #results-table tbody tr.table-active > * {
   box-shadow: inset 0 0 0 9999px rgba(154, 182, 222, 0.18);
 }
-#audit-details .detail-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px 20px;
+.review-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  border-radius: 999px;
+  padding: 6px 10px;
+  border: 1px solid #d9e3f0;
+  background: #f8fbff;
+  color: #335;
 }
-#audit-details .detail-item {
-  background: #fff;
-  border: 1px solid #e4e8ee;
-  border-radius: 10px;
-  padding: 12px 14px;
+.panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
-#audit-details .detail-item.full { grid-column: 1 / -1; }
-#audit-details strong.label {
+.panel-section + .panel-section {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #edf1f5;
+}
+.panel-label {
   display: block;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
   color: #6c757d;
   margin-bottom: 6px;
 }
+.panel-value {
+  color: #222;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.panel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.panel-grid .full { grid-column: 1 / -1; }
 .empty-state {
   text-align: center;
   padding: 28px 16px;
   color: #6c757d;
 }
+.selection-placeholder {
+  border: 1px dashed #d6dee8;
+  border-radius: 14px;
+  padding: 28px 18px;
+  text-align: center;
+  color: #6c757d;
+  background: linear-gradient(180deg, #fbfdff 0%, #f6f9fc 100%);
+}
+.selection-placeholder i {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+  color: #9AB6DE;
+}
+.compact-modal .modal-dialog { max-width: 520px; }
+.compact-modal .modal-body { padding-top: 0.75rem; }
+.compact-modal textarea { min-height: 140px; resize: vertical; }
+#shareSitesContainer {
+  max-height: 180px;
+  overflow: auto;
+  border: 1px solid #e5e9ef;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fbfcfe;
+}
+#shareSitesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 12px;
+}
+#shareSitesGrid label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+}
+#shareMessage { min-height: 160px; resize: vertical; }
+@media (max-width: 1200px) {
+  .audit-grid { grid-template-columns: 1fr; }
+  .audit-panel-card { position: static; }
+  .table-wrap { max-height: none; }
+}
+@media (max-width: 768px) {
+  #shareSitesGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .panel-grid { grid-template-columns: 1fr; }
+}
 </style>
-<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 <header>
@@ -128,75 +206,221 @@ main { padding: 2em; }
   </div>
 
   <main id="mainContent">
-    <section>
-      <h2>Audit & Verification</h2>
-
-      <form class="row g-3 needs-validation mb-3" novalidate>
-        <div class="col-md-3">
-          <label class="form-label">Keywords:</label>
-          <input id="searchInput" class="form-control" placeholder="Keywords..." type="text"/>
+    <div class="audit-grid">
+      <section class="audit-list-card">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+          <div>
+            <h2 class="mb-1">Audit & Verification</h2>
+            <div class="text-muted">Review submissions and implementations without losing context from the list.</div>
+          </div>
+          <div class="btn-group audit-toolbar" role="group" aria-label="Tabela fonte">
+            <button id="btnSubmissions" class="btn btn-outline-primary active" type="button">Submissions</button>
+            <button id="btnAtividades" class="btn btn-outline-primary" type="button">Implementations</button>
+          </div>
         </div>
-        <div class="col-md-3">
-          <label for="filter-category" class="form-label">Category:</label>
-          <select id="filter-category" class="form-select">
-            <option value="">All</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label for="filter-status" class="form-label">Status:</label>
-          <select id="filter-status" class="form-select">
-            <option value="">All</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label for="filter-location" class="form-label">Region/Site:</label>
-          <select id="filter-location" class="form-select">
-            <option value="">All</option>
-          </select>
-        </div>
-      </form>
 
-      <div class="btn-group mb-3 audit-toolbar" role="group" aria-label="Tabela fonte">
-        <button id="btnSubmissions" class="btn btn-outline-primary active" type="button">Submissions</button>
-        <button id="btnAtividades" class="btn btn-outline-primary" type="button">Implementations</button>
-      </div>
+        <form class="row g-3 needs-validation mb-3" novalidate>
+          <div class="col-md-3">
+            <label class="form-label">Keywords:</label>
+            <input id="searchInput" class="form-control" placeholder="Keywords..." type="text"/>
+          </div>
+          <div class="col-md-3">
+            <label for="filter-category" class="form-label">Category:</label>
+            <select id="filter-category" class="form-select">
+              <option value="">All</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="filter-status" class="form-label">Status:</label>
+            <select id="filter-status" class="form-select">
+              <option value="">All</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="filter-location" class="form-label">Region/Site:</label>
+            <select id="filter-location" class="form-select">
+              <option value="">All</option>
+            </select>
+          </div>
+        </form>
 
-      <table class="table table-hover" id="results-table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Site/Region</th>
-            <th>Local Responsible</th>
-            <th>Category</th>
-            <th>Status</th>
-            <th>Type</th>
-            <th>Best Practice Creator</th>
-            <th>Files</th>
-            <th>Decision</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
+        <div class="table-wrap">
+          <table class="table table-hover align-middle" id="results-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Site/Region</th>
+                <th>Responsible</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Creator</th>
+                <th>Files</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
 
-    <div id="audit-details" class="mt-4" style="display:none;">
-      <h3>Best Practice Details</h3>
-      <div class="detail-grid">
-        <div class="detail-item"><strong class="label">Title</strong><span id="detalhe-title"></span></div>
-        <div class="detail-item"><strong class="label">Category</strong><span id="detalhe-category"></span></div>
-        <div class="detail-item"><strong class="label">Region/Site</strong><span id="detalhe-region"></span></div>
-        <div class="detail-item"><strong class="label">Local Responsible</strong><span id="detalhe-responsible"></span></div>
-        <div class="detail-item"><strong class="label">Status</strong><span id="detalhe-status"></span></div>
-        <div class="detail-item"><strong class="label">Type</strong><span id="detalhe-type"></span></div>
-        <div class="detail-item full"><strong class="label">Applicability</strong><span id="detalhe-applicability"></span></div>
-        <div class="detail-item"><strong class="label">Functional Area</strong><span id="detalhe-functional"></span></div>
-        <div class="detail-item"><strong class="label">Best Practice Creator</strong><span id="detalhe-creator"></span></div>
-        <div class="detail-item full"><strong class="label">Description</strong><span id="detalhe-description"></span></div>
-        <div class="detail-item full"><strong class="label">Steps to Implement</strong><span id="detalhe-steps"></span></div>
-        <div class="detail-item full"><strong class="label">Auditor Comments</strong><span id="detalhe-comment"></span></div>
-      </div>
+      <aside class="audit-panel-card">
+        <div id="reviewEmpty" class="selection-placeholder">
+          <i class="bi bi-ui-checks-grid"></i>
+          <div class="fw-semibold mb-1">Select an item to review</div>
+          <div>Use the list on the left to inspect details, approve, return for revision, or share the best practice.</div>
+        </div>
+
+        <div id="reviewPanel" style="display:none;">
+          <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+            <div>
+              <div class="text-muted small">Reviewing</div>
+              <h4 id="panelTitle" class="mb-1">-</h4>
+              <span id="panelStatusBadge" class="review-pill">Status</span>
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="clearSelectionBtn">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+
+          <div class="panel-actions mb-3">
+            <button type="button" class="btn btn-primary" id="openApproveBtn">Approve</button>
+            <button type="button" class="btn btn-outline-primary" id="openReproveBtn">Reprove</button>
+            <button type="button" class="btn btn-success" id="openShareBtn">Share</button>
+          </div>
+
+          <div class="panel-grid">
+            <div class="panel-section">
+              <span class="panel-label">Region/Site</span>
+              <div class="panel-value" id="panelRegion">-</div>
+            </div>
+            <div class="panel-section">
+              <span class="panel-label">Local Responsible</span>
+              <div class="panel-value" id="panelResponsible">-</div>
+            </div>
+            <div class="panel-section">
+              <span class="panel-label">Category</span>
+              <div class="panel-value" id="panelCategory">-</div>
+            </div>
+            <div class="panel-section">
+              <span class="panel-label">Type</span>
+              <div class="panel-value" id="panelType">-</div>
+            </div>
+            <div class="panel-section">
+              <span class="panel-label">Best Practice Creator</span>
+              <div class="panel-value" id="panelCreator">-</div>
+            </div>
+            <div class="panel-section">
+              <span class="panel-label">Attachment</span>
+              <div class="panel-value" id="panelAttachment">-</div>
+            </div>
+            <div class="panel-section full">
+              <span class="panel-label">Applicability</span>
+              <div class="panel-value" id="panelApplicability">-</div>
+            </div>
+            <div class="panel-section full">
+              <span class="panel-label">Functional Area</span>
+              <div class="panel-value" id="panelFunctional">-</div>
+            </div>
+            <div class="panel-section full">
+              <span class="panel-label">Description</span>
+              <div class="panel-value" id="panelDescription">-</div>
+            </div>
+            <div class="panel-section full">
+              <span class="panel-label">Steps to Implement</span>
+              <div class="panel-value" id="panelSteps">-</div>
+            </div>
+            <div class="panel-section full">
+              <span class="panel-label">Auditor Comment</span>
+              <div class="panel-value" id="panelComment">-</div>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
   </main>
+</div>
+
+<div class="modal fade compact-modal" id="approveModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-check-circle me-2 text-primary"></i>Approve Best Practice</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="small text-muted mb-2">Selected idea</div>
+        <div class="fw-semibold mb-3" id="approveTargetTitle">-</div>
+        <label for="approveComment" class="form-label">Auditor comment</label>
+        <textarea id="approveComment" class="form-control" placeholder="Add an approval note..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirmApproveBtn">Confirm Approval</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade compact-modal" id="reproveModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrow-counterclockwise me-2 text-primary"></i>Return for Revision</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="small text-muted mb-2">Selected idea</div>
+        <div class="fw-semibold mb-3" id="reproveTargetTitle">-</div>
+        <label for="reproveComment" class="form-label">Auditor comment</label>
+        <textarea id="reproveComment" class="form-control" placeholder="Explain what needs to be revised..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirmReproveBtn">Confirm Return</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="shareModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-share-fill me-2 text-success"></i>Share Best Practice</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12">
+            <div class="small text-muted mb-1">Selected idea</div>
+            <div class="fw-semibold" id="shareTargetTitle">-</div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Site/Region</label>
+            <div class="d-flex gap-2 mb-2">
+              <button type="button" class="btn btn-sm btn-outline-primary" id="selectAllSitesBtn">Select all</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAllSitesBtn">Clear</button>
+            </div>
+            <div id="shareSitesContainer">
+              <div id="shareSitesGrid"></div>
+            </div>
+          </div>
+          <div class="col-12">
+            <label for="shareSubject" class="form-label">Subject</label>
+            <input type="text" id="shareSubject" class="form-control">
+          </div>
+          <div class="col-12">
+            <label for="shareMessage" class="form-label">Message</label>
+            <textarea id="shareMessage" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" id="confirmShareBtn">Send Message</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -218,21 +442,37 @@ function toggleSidebar() {
   }
 
   const tableBody = document.querySelector('#results-table tbody');
-  const detailsBox = document.getElementById('audit-details');
   const searchInput = document.getElementById('searchInput');
   const categoryFilter = document.getElementById('filter-category');
   const statusFilter = document.getElementById('filter-status');
   const locationFilter = document.getElementById('filter-location');
   const btnSubmissions = document.getElementById('btnSubmissions');
   const btnAtividades = document.getElementById('btnAtividades');
+  const reviewEmpty = document.getElementById('reviewEmpty');
+  const reviewPanel = document.getElementById('reviewPanel');
+  const clearSelectionBtn = document.getElementById('clearSelectionBtn');
+  const openApproveBtn = document.getElementById('openApproveBtn');
+  const openReproveBtn = document.getElementById('openReproveBtn');
+  const openShareBtn = document.getElementById('openShareBtn');
+
+  const approveModalEl = document.getElementById('approveModal');
+  const reproveModalEl = document.getElementById('reproveModal');
+  const shareModalEl = document.getElementById('shareModal');
+  const approveModal = new bootstrap.Modal(approveModalEl);
+  const reproveModal = new bootstrap.Modal(reproveModalEl);
+  const shareModal = new bootstrap.Modal(shareModalEl);
+
+  const siteOptions = [
+    'AM Bonn','APG','AUB','BAZ','BLA','BON','BRU','BUZ','CIN','CON','DAN','DAN HC','F3D','FIL','GAL SM','GAL HC','GLA','GSM','GTO','HOR','INC','IST','JAP','MIL','NAG','PAS','PIM','RAF','SAL','SIT','SMG','SMS','STT','UK','WIS','WISC','YIZ'
+  ];
 
   let currentView = 'submissions';
   let currentTable = 'submissions';
   let submissions = [];
   let implementations = [];
   let visibleData = [];
-  let activeKey = null;
-  let activeRow = null;
+  let selectedItem = null;
+  let selectedRow = null;
 
   function normalize(value) {
     return (value || '').toString().trim();
@@ -247,11 +487,16 @@ function toggleSidebar() {
       .replace(/'/g, '&#39;');
   }
 
-  function clearDetails() {
-    activeKey = null;
-    if (activeRow) activeRow.classList.remove('table-active');
-    activeRow = null;
-    detailsBox.style.display = 'none';
+  function getLocation(item) {
+    return normalize(item.imp_plant || item.region_plant);
+  }
+
+  function getResponsible(item) {
+    return normalize(item.ImpResp || item.responsible);
+  }
+
+  function getCreator(item) {
+    return normalize(item.responsible);
   }
 
   function fillSelect(selectEl, values) {
@@ -272,32 +517,84 @@ function toggleSidebar() {
     return currentView === 'submissions' ? submissions : implementations;
   }
 
+  function clearSelection() {
+    selectedItem = null;
+    if (selectedRow) selectedRow.classList.remove('table-active');
+    selectedRow = null;
+    reviewPanel.style.display = 'none';
+    reviewEmpty.style.display = 'block';
+  }
+
+  function buildShareSites() {
+    const container = document.getElementById('shareSitesGrid');
+    container.innerHTML = '';
+    siteOptions.forEach(site => {
+      const label = document.createElement('label');
+      label.innerHTML = `<input type="checkbox" class="share-site-checkbox" value="${escapeHtml(site)}"> <span>${escapeHtml(site)}</span>`;
+      container.appendChild(label);
+    });
+  }
+
+  function setStatusBadge(text) {
+    const badge = document.getElementById('panelStatusBadge');
+    badge.textContent = text || 'No status';
+  }
+
+  function selectItem(item, row) {
+    if (selectedItem && selectedItem.id === item.id && currentTable === (currentView === 'submissions' ? 'submissions' : 'atividades_selecionadas')) {
+      if (selectedRow === row) {
+        clearSelection();
+        return;
+      }
+    }
+
+    if (selectedRow) selectedRow.classList.remove('table-active');
+    row.classList.add('table-active');
+    selectedRow = row;
+    selectedItem = item;
+
+    document.getElementById('panelTitle').innerText = normalize(item.title) || '-';
+    setStatusBadge(normalize(item.status) || 'No status');
+    document.getElementById('panelRegion').innerText = getLocation(item) || 'None';
+    document.getElementById('panelResponsible').innerText = getResponsible(item) || 'None';
+    document.getElementById('panelCategory').innerText = normalize(item.category) || 'None';
+    document.getElementById('panelType').innerText = normalize(item.type) || 'None';
+    document.getElementById('panelCreator').innerText = getCreator(item) || 'None';
+    document.getElementById('panelApplicability').innerText = normalize(item.applicability) || 'None';
+    document.getElementById('panelFunctional').innerText = normalize(item.functional_area) || 'None';
+    document.getElementById('panelDescription').innerText = normalize(item.description) || 'None';
+    document.getElementById('panelSteps').innerText = normalize(item.steps) || 'None';
+    document.getElementById('panelComment').innerText = normalize(item.auditor_comment) || 'None';
+
+    const attachment = document.getElementById('panelAttachment');
+    if (normalize(item.file_url)) {
+      attachment.innerHTML = `<a href="${escapeHtml(item.file_url)}" target="_blank">Open attachment</a>`;
+    } else {
+      attachment.innerText = 'None';
+    }
+
+    reviewEmpty.style.display = 'none';
+    reviewPanel.style.display = 'block';
+  }
+
   async function loadData() {
     const [{ data: submissionsData, error: submissionsError }, { data: implData, error: implError }] = await Promise.all([
       supabase.from('submissions').select('*').order('id', { ascending: false }),
       supabase.from('atividades_selecionadas').select('*').order('id', { ascending: false })
     ]);
 
-    if (submissionsError) {
-      console.error('Error loading submissions:', submissionsError);
-      submissions = [];
-    } else {
-      submissions = submissionsData || [];
-    }
+    submissions = submissionsError ? [] : (submissionsData || []);
+    implementations = implError ? [] : (implData || []);
 
-    if (implError) {
-      console.error('Error loading implementations:', implError);
-      implementations = [];
-    } else {
-      implementations = implData || [];
-    }
+    if (submissionsError) console.error('Error loading submissions:', submissionsError);
+    if (implError) console.error('Error loading implementations:', implError);
   }
 
   function refreshFilters() {
     const dataset = getCurrentDataset();
     fillSelect(categoryFilter, dataset.map(item => item.category));
     fillSelect(statusFilter, dataset.map(item => item.status));
-    fillSelect(locationFilter, dataset.map(item => item.imp_plant || item.region_plant));
+    fillSelect(locationFilter, dataset.map(item => getLocation(item)));
   }
 
   function applyFilters() {
@@ -308,27 +605,30 @@ function toggleSidebar() {
     const location = normalize(locationFilter.value);
 
     visibleData = dataset.filter(item => {
-      const itemLocation = normalize(item.imp_plant || item.region_plant);
-      const itemResponsible = normalize(item.ImpResp || item.responsible);
       const haystack = [
         item.title,
         item.description,
         item.category,
         item.status,
         item.type,
-        itemLocation,
-        itemResponsible,
-        item.responsible,
+        getLocation(item),
+        getResponsible(item),
+        getCreator(item),
         item.functional_area,
         item.applicability,
-        item.auditor_comment
+        item.auditor_comment,
+        item.steps
       ].map(v => normalize(v).toLowerCase()).join(' ');
 
       return (!keyword || haystack.includes(keyword)) &&
              (!category || normalize(item.category) === category) &&
              (!status || normalize(item.status) === status) &&
-             (!location || itemLocation === location);
+             (!location || getLocation(item) === location);
     });
+
+    if (selectedItem && !visibleData.some(item => item.id === selectedItem.id)) {
+      clearSelection();
+    }
 
     renderTable();
   }
@@ -337,148 +637,113 @@ function toggleSidebar() {
     tableBody.innerHTML = '';
 
     if (!visibleData.length) {
-      tableBody.innerHTML = '<tr><td colspan="9" class="empty-state">No records found for the selected filters.</td></tr>';
-      clearDetails();
+      tableBody.innerHTML = '<tr><td colspan="8" class="empty-state">No records found for the selected filters.</td></tr>';
       return;
     }
 
     visibleData.forEach(item => {
       const row = document.createElement('tr');
-      const itemKey = `${currentView}-${item.id}`;
-      row.dataset.key = itemKey;
-
-      const location = normalize(item.imp_plant || item.region_plant);
-      const responsible = normalize(item.ImpResp || item.responsible);
-      const creator = normalize(item.responsible);
-      const fileCell = item.file_url
+      const fileCell = normalize(item.file_url)
         ? `<a href="${escapeHtml(item.file_url)}" target="_blank">Download</a>`
         : '';
 
       row.innerHTML = `
         <td>${escapeHtml(item.title)}</td>
-        <td>${escapeHtml(location)}</td>
-        <td>${escapeHtml(responsible)}</td>
+        <td>${escapeHtml(getLocation(item))}</td>
+        <td>${escapeHtml(getResponsible(item))}</td>
         <td>${escapeHtml(item.category)}</td>
         <td>${escapeHtml(item.status)}</td>
         <td>${escapeHtml(item.type)}</td>
-        <td>${escapeHtml(creator)}</td>
+        <td>${escapeHtml(getCreator(item))}</td>
         <td>${fileCell}</td>
-        <td>
-          <div class="d-flex gap-2 flex-wrap">
-            <button type="button" class="btn btn-primary btn-sm js-approve">Approve</button>
-            <button type="button" class="btn btn-primary btn-sm js-reprove">Reprove</button>
-            <button type="button" class="btn btn-success btn-sm js-share">Share</button>
-          </div>
-        </td>
       `;
 
-      if (activeKey === itemKey) {
+      if (selectedItem && selectedItem.id === item.id) {
         row.classList.add('table-active');
-        activeRow = row;
+        selectedRow = row;
       }
 
       row.addEventListener('click', (event) => {
-        if (event.target.closest('button') || event.target.closest('a')) return;
-        toggleDetails(item, row, itemKey);
-      });
-
-      row.querySelector('.js-approve').addEventListener('click', (event) => {
-        event.stopPropagation();
-        updateStatusAndNotify(item, 'Approved');
-      });
-      row.querySelector('.js-reprove').addEventListener('click', (event) => {
-        event.stopPropagation();
-        updateStatusAndNotify(item, 'Revision');
-      });
-      row.querySelector('.js-share').addEventListener('click', (event) => {
-        event.stopPropagation();
-        compartilharMelhoria(item.id, item.title);
+        if (event.target.closest('a')) return;
+        selectItem(item, row);
       });
 
       tableBody.appendChild(row);
     });
   }
 
-  function toggleDetails(item, row, itemKey) {
-    if (activeKey === itemKey) {
-      clearDetails();
-      return;
-    }
-
-    if (activeRow) activeRow.classList.remove('table-active');
-    row.classList.add('table-active');
-    activeRow = row;
-    activeKey = itemKey;
-
-    document.getElementById('detalhe-title').innerText = normalize(item.title) || 'None';
-    document.getElementById('detalhe-category').innerText = normalize(item.category) || 'None';
-    document.getElementById('detalhe-region').innerText = normalize(item.imp_plant || item.region_plant) || 'None';
-    document.getElementById('detalhe-responsible').innerText = normalize(item.ImpResp || item.responsible) || 'None';
-    document.getElementById('detalhe-status').innerText = normalize(item.status) || 'None';
-    document.getElementById('detalhe-type').innerText = normalize(item.type) || 'None';
-    document.getElementById('detalhe-applicability').innerText = normalize(item.applicability) || 'None';
-    document.getElementById('detalhe-functional').innerText = normalize(item.functional_area) || 'None';
-    document.getElementById('detalhe-creator').innerText = normalize(item.responsible) || 'None';
-    document.getElementById('detalhe-description').innerText = normalize(item.description) || 'None';
-    document.getElementById('detalhe-steps').innerText = normalize(item.steps) || 'None';
-    document.getElementById('detalhe-comment').innerText = normalize(item.auditor_comment) || 'None';
-
-    detailsBox.style.display = 'block';
-  }
-
-  async function updateStatusAndNotify(item, newStatus) {
-    const { data, error } = await supabase
-      .from(currentTable)
-      .update({ status: newStatus })
-      .eq('id', item.id)
-      .select(currentTable === 'atividades_selecionadas' ? 'id, title, responsible, ImpResp' : 'id, title, responsible')
-      .single();
-
-    if (error) {
-      alert('Error updating status.');
-      console.error(error);
-      return;
-    }
-
-    const responsibleEmail = currentTable === 'atividades_selecionadas'
-      ? normalize(data.ImpResp || data.responsible)
-      : normalize(data.responsible);
-
-    const subject = `Best Practice ${newStatus}`;
-    const body = newStatus === 'Approved'
-      ? `Your best practice "${data.title}" was approved.\n\nAuditor comment: `
-      : `Your best practice "${data.title}" was returned for review.\n\nAuditor comment: `;
-
-    if (typeof openMessageModal === 'function') {
-      openMessageModal(responsibleEmail, subject, body);
-    }
-
-    await loadData();
-    refreshFilters();
-    applyFilters();
-    clearDetails();
-  }
-
-  window.compartilharMelhoria = function(id, titulo) {
-    const pathParts = window.location.pathname.split('/').filter(Boolean);
-    const basePath = pathParts.length > 1 ? `/${pathParts[0]}` : '';
-    const linkDetail = `${window.location.origin}${basePath}/detail.html?id=${id}`;
-    const body = `Take a look at this Best Practice: "${titulo}"\n\n${linkDetail}`;
-    if (typeof openMessageModal === 'function') {
-      openMessageModal('', `Shared Best Practice: ${titulo}`, body);
-    }
-  };
-
   function setView(view) {
     currentView = view;
     currentTable = view === 'submissions' ? 'submissions' : 'atividades_selecionadas';
     btnSubmissions.classList.toggle('active', view === 'submissions');
     btnAtividades.classList.toggle('active', view === 'implementations');
-    clearDetails();
+    clearSelection();
     refreshFilters();
     applyFilters();
   }
 
+  async function sendDirectMessage(recipientEmail, subject, body) {
+    const targetEmail = normalize(recipientEmail);
+    if (!targetEmail) return;
+
+    const { data: users, error: userError } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', targetEmail)
+      .limit(1);
+
+    if (userError || !users || !users.length) {
+      throw new Error('Recipient not found.');
+    }
+
+    const { error: insertError } = await supabase
+      .from('messages')
+      .insert([{ sender: user.id, receiver: users[0].id, subject, body }]);
+
+    if (insertError) throw insertError;
+  }
+
+  async function sendShareMessages(selectedSites, subject, body) {
+    const { data: usersData, error } = await supabase
+      .from('users')
+      .select('id, site_region')
+      .in('site_region', selectedSites);
+
+    if (error) throw error;
+    if (!usersData || !usersData.length) throw new Error('No users found for the selected sites.');
+
+    const messages = usersData.map(target => ({
+      sender: user.id,
+      receiver: target.id,
+      subject,
+      body
+    }));
+
+    const { error: insertError } = await supabase.from('messages').insert(messages);
+    if (insertError) throw insertError;
+    return usersData.length;
+  }
+
+  async function updateStatus(item, newStatus, comment) {
+    const payload = { status: newStatus, auditor_comment: comment };
+    const { data, error } = await supabase
+      .from(currentTable)
+      .update(payload)
+      .eq('id', item.id)
+      .select(currentTable === 'atividades_selecionadas' ? 'id, title, responsible, ImpResp, auditor_comment' : 'id, title, responsible, auditor_comment')
+      .single();
+
+    if (error) throw error;
+    return data;
+  }
+
+  function defaultShareLink(id) {
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const basePath = pathParts.length > 1 ? `/${pathParts[0]}` : '';
+    return `${window.location.origin}${basePath}/detail.html?id=${id}`;
+  }
+
+  clearSelectionBtn.addEventListener('click', clearSelection);
   btnSubmissions.addEventListener('click', () => setView('submissions'));
   btnAtividades.addEventListener('click', () => setView('implementations'));
   searchInput.addEventListener('input', applyFilters);
@@ -486,6 +751,105 @@ function toggleSidebar() {
   statusFilter.addEventListener('change', applyFilters);
   locationFilter.addEventListener('change', applyFilters);
 
+  openApproveBtn.addEventListener('click', () => {
+    if (!selectedItem) return;
+    document.getElementById('approveTargetTitle').innerText = normalize(selectedItem.title) || '-';
+    document.getElementById('approveComment').value = normalize(selectedItem.auditor_comment);
+    approveModal.show();
+  });
+
+  openReproveBtn.addEventListener('click', () => {
+    if (!selectedItem) return;
+    document.getElementById('reproveTargetTitle').innerText = normalize(selectedItem.title) || '-';
+    document.getElementById('reproveComment').value = normalize(selectedItem.auditor_comment);
+    reproveModal.show();
+  });
+
+  openShareBtn.addEventListener('click', () => {
+    if (!selectedItem) return;
+    document.getElementById('shareTargetTitle').innerText = normalize(selectedItem.title) || '-';
+    document.getElementById('shareSubject').value = `Shared Best Practice: ${normalize(selectedItem.title)}`;
+    document.getElementById('shareMessage').value = `Take a look at this Best Practice: "${normalize(selectedItem.title)}"\n\n${defaultShareLink(selectedItem.id)}`;
+    document.querySelectorAll('.share-site-checkbox').forEach(cb => { cb.checked = false; });
+    shareModal.show();
+  });
+
+  document.getElementById('confirmApproveBtn').addEventListener('click', async () => {
+    if (!selectedItem) return;
+    try {
+      const comment = document.getElementById('approveComment').value.trim();
+      const updated = await updateStatus(selectedItem, 'Approved', comment);
+      const recipientEmail = currentTable === 'atividades_selecionadas'
+        ? normalize(updated.ImpResp || updated.responsible)
+        : normalize(updated.responsible);
+      await sendDirectMessage(recipientEmail, 'Best Practice Approved', `Your best practice "${updated.title}" was approved.\n\nAuditor comment: ${comment || 'No comments.'}`);
+      approveModal.hide();
+      await loadData();
+      refreshFilters();
+      applyFilters();
+      clearSelection();
+      alert('Best practice approved and notification sent.');
+    } catch (error) {
+      console.error(error);
+      alert(`Error during approval: ${error.message || 'Unknown error.'}`);
+    }
+  });
+
+  document.getElementById('confirmReproveBtn').addEventListener('click', async () => {
+    if (!selectedItem) return;
+    try {
+      const comment = document.getElementById('reproveComment').value.trim();
+      const updated = await updateStatus(selectedItem, 'Revision', comment);
+      const recipientEmail = currentTable === 'atividades_selecionadas'
+        ? normalize(updated.ImpResp || updated.responsible)
+        : normalize(updated.responsible);
+      await sendDirectMessage(recipientEmail, 'Best Practice Returned for Revision', `Your best practice "${updated.title}" was returned for revision.\n\nAuditor comment: ${comment || 'No comments.'}`);
+      reproveModal.hide();
+      await loadData();
+      refreshFilters();
+      applyFilters();
+      clearSelection();
+      alert('Best practice returned for revision and notification sent.');
+    } catch (error) {
+      console.error(error);
+      alert(`Error during return for revision: ${error.message || 'Unknown error.'}`);
+    }
+  });
+
+  document.getElementById('selectAllSitesBtn').addEventListener('click', () => {
+    document.querySelectorAll('.share-site-checkbox').forEach(cb => { cb.checked = true; });
+  });
+
+  document.getElementById('deselectAllSitesBtn').addEventListener('click', () => {
+    document.querySelectorAll('.share-site-checkbox').forEach(cb => { cb.checked = false; });
+  });
+
+  document.getElementById('confirmShareBtn').addEventListener('click', async () => {
+    if (!selectedItem) return;
+    try {
+      const selectedSites = [...document.querySelectorAll('.share-site-checkbox:checked')].map(cb => cb.value);
+      if (!selectedSites.length) {
+        alert('Select at least one site.');
+        return;
+      }
+
+      const subject = normalize(document.getElementById('shareSubject').value);
+      const body = normalize(document.getElementById('shareMessage').value);
+      if (!subject || !body) {
+        alert('Fill in subject and message before sending.');
+        return;
+      }
+
+      const recipients = await sendShareMessages(selectedSites, subject, body);
+      shareModal.hide();
+      alert(`Message sent successfully to ${recipients} users.`);
+    } catch (error) {
+      console.error(error);
+      alert(`Error sending share message: ${error.message || 'Unknown error.'}`);
+    }
+  });
+
+  buildShareSites();
   await loadData();
   setView('submissions');
 </script>
@@ -508,6 +872,5 @@ function toggleSidebar() {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script type="module" src="modal-Multloader.js"></script>
 </body>
 </html>
